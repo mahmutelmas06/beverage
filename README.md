@@ -25,9 +25,9 @@ You can add your own drinks by using that template
 
 Hot Beverage Name-Description-Liquid Colour-Cup Texture-Recipe     
 
-register_hotbeverage("coffee",  S("Coffee"),	"#8B4513:190",	"cup.png^[colorize:#CDC673:110", 	"group:beverage_apple")
+register_hotbeverage("coffee",  "Coffee",	"#8B4513:190",	"cup.png^[colorize:#CDC673:110", 	"group:beverage_apple")
 
 
 Cold Beverage Name-Description-Liquid Colour-Recipe     
 
-register_coldbeverage("applejuice",  S("Apple Juice"), "#8B4513:190",    "group:beverage_apple")
+register_coldbeverage("applejuice",  "Apple Juice", "#8B4513:190",    "group:beverage_apple")
