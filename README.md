@@ -1,9 +1,8 @@
-[b][size=200]Baverage Mod[/size][/b]
-                                      [color=#404080]This mod adds various drinks to minetest[/color]
-(My first mod)
+Baverage Mod
+This mod adds various drinks to minetest
 
 License = WTFPL
-                 Except beverage.support code from food mod by rubenwardy GPL
+Except beverage.support code from food mod by rubenwardy GPL
 
 Coffee, Milk, Hot Chocolate 
 Tea, Green Tea , Orange Juice 
@@ -21,13 +20,13 @@ farming, farming_plus, mobs, animals_modpack, foodblock
 moretrees, biomelib, mtfoods, foods, ethereal, flowers
 bushes, food_sweet, kpgmobs, fruit, jkanimals, ironapple
 
-[b]You can add your own drinks by using that template[/b]
+You can add your own drinks by using that template
 
-[code]-- Hot Beverage Name	          Description	            Liquid Colour              Cup Texture					 		      Recipe     
+Hot Beverage Name	          Description	            Liquid Colour              Cup Texture					 		      Recipe     
 
-register_hotbeverage("coffee",    S("Coffee"),	    "#8B4513:190",    	"cup.png^[colorize:#CDC673:110", 	  "group:beverage_apple")[/code]
+register_hotbeverage("coffee",    S("Coffee"),	    "#8B4513:190",    	"cup.png^[colorize:#CDC673:110", 	  "group:beverage_apple")
 
 
-[code]-- Cold Beverage Name	             Description	              Liquid Colour        	 		      Recipe     
+Cold Beverage Name	             Description	              Liquid Colour        	 		      Recipe     
 
-register_coldbeverage("applejuice",    S("Apple Juice"),	    "#8B4513:190",    	  "group:beverage_apple")[/code]
+register_coldbeverage("applejuice",    S("Apple Juice"),	    "#8B4513:190",    	  "group:beverage_apple")
