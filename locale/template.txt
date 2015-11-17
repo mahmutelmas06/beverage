@@ -1,0 +1,18 @@
+# Language Name
+# Translator Name
+# Translator email
+
+Coffee = 
+Milk = 
+Hot Chocolate = 
+Tea = 
+Green Tea = 
+Cup = 
+Glasses = 
+Orange Juice = 
+Apple Juice = 
+Cherry Juice = 
+Lemonade = 
+Yoghurt = 
+Ice Tea = 
+Coconut Milk = 

@@ -1,0 +1,18 @@
+# Türkçe
+# Mahmut Elmas
+# mahmutelmas06@hotmail.com
+
+Coffee = Kahve
+Milk = Süt
+Hot Chocolate = Sýcak Çikolata
+Tea = Çay
+Green Tea = Yeþil Çay
+Cup = Fincan
+Glasses = Bardak
+Orange Juice = Portakal Suyu
+Apple Juice = Elma Suyu
+Cherry Juice = Viþne Suyu
+Lemonade = Limonata
+Yoghurt = Ayran
+Ice Tea = Soðuk Çay
+Coconut Milk = Hindistan Cevizi Sütü
