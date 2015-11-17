@@ -9,16 +9,12 @@ Tea, Green Tea , Orange Juice
 Apple Juice, Cherry Juice, Lemonade 
 Yoghurt, Ice Tea, Coconut Milk
 
-[img]https://forum.minetest.net/download/file.php?id=4146[/img]
+https://forum.minetest.net/download/file.php?id=4146
 
 Hot drinks has steam animation
-[img]https://forum.minetest.net/download/file.php?id=4147[/img]
+https://forum.minetest.net/download/file.php?id=4147
 
 
-All drinks has support to theese mods
-farming, farming_plus, mobs, animals_modpack, foodblock
-moretrees, biomelib, mtfoods, foods, ethereal, flowers
-bushes, food_sweet, kpgmobs, fruit, jkanimals, ironapple
 
 You can add your own drinks by using that template
 
