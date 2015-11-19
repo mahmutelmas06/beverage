@@ -3,9 +3,12 @@ vessels
 bucket
 intllib?
 food?
-plantlib?
 mobs?
 my_mobs?
 jkanimals?
 farming_plus?
 animalmaterials?
+kpgmobs?
+biomelib?
+ironapple?
+food_sweet

@@ -33,9 +33,11 @@ function register_hotbeverage(nodename,desc,liquidcolour, cuptexture, recipe)
 	minetest.register_node(":beverage:"..nodename, {
 		description = desc,
 		drawtype = "nodebox",
+		use_texture_alpha = true,
 		paramtype = "light",
 		is_ground_content = false,
 		walkable = false,
+		--inventory_image = "(cup_inv.png^[mask:"..cuptexture..")^(inside.png^[colorize:"..liquidcolour..")",
 		drop = "vessels:glass_fragments",
 		groups = {dig_immediate=3,attached_node=1},
 		sounds = default.node_sound_glass_defaults(),
@@ -47,25 +49,21 @@ function register_hotbeverage(nodename,desc,liquidcolour, cuptexture, recipe)
 		end,
 
 		tiles = {
-		""..cuptexture.."^(liquid.png^[colorize:"..liquidcolour..")",
-		''..cuptexture,
-		''..cuptexture,
-		''..cuptexture,
-		''..cuptexture,
-		''..cuptexture
+				{name= ''..cuptexture..'^(liquid.png^[colorize:'..liquidcolour..')'},
+				{name= ''..cuptexture},
 				},		
 
 		node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.12, -0.5, -0.12, 0.12, -0.224615, -0.12}, -- left
-			{-0.12, -0.5, 0.12, 0.12, -0.224615, 0.12}, -- right
-			{-0.12, -0.5, -0.12, -0.12, -0.224615, 0.12}, -- front
-			{0.13, -0.5, -0.12, 0.12, -0.224615, 0.12}, -- behind
-			{0.12, -0.5, -0.0295275, 0.310597, -0.438462, 0.0295275}, -- holdbot
-			{0.12, -0.31073, -0.0354331, 0.310597, -0.249192, 0.0413386}, -- holdtop
-			{0.271386, -0.468566, -0.0354331, 0.310597, -0.249192, 0.0413386}, -- hold
-			{-0.12, -0.5, -0.12, 0.12, -0.257692, 0.12}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, -0.25, 0.1875}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, -0.1875, -0.0625}, -- left
+			{-0.1875, -0.5, 0.125, 0.125, -0.1875, 0.1875}, -- right
+			{0.0625, -0.5, -0.125, 0.125, -0.1875, 0.1875}, -- back
+			{-0.1875, -0.5, -0.125, -0.125, -0.1875, 0.1875}, -- front
+			{0.1875, -0.4375, 0, 0.249447, -0.25, 0.0649601}, -- hold
+			{0.125, -0.3125, 0, 0.1875, -0.25, 0.0649601}, -- holdtop
+			{0.125, -0.4375, 0, 0.1875, -0.372667, 0.06496}, -- holdbot
 
 				}
 		},
@@ -87,39 +85,35 @@ function register_hotbeverage(nodename,desc,liquidcolour, cuptexture, recipe)
 	
 	
 	-- Steam animation for hot drinks
+	-- From farming plusplus mod by MTDad
 
 minetest.register_abm({
-	nodenames = {
+		nodenames = {
 				"beverage:"..nodename
 				},
-	interval = 1,
-	chance = 2,
+	interval = 3,
+	chance = 1,
 	action = function(pos, node)
-	     if
-                minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == "air" and
-                minetest.get_node({x=pos.x, y=pos.y+2.0, z=pos.z}).name == "air"
-             then
-		local image_number = math.random(4)
-		minetest.add_particlespawner({
-			amount = 5,
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == "air"
+		then minetest.add_particlespawner({
+			amount = 6,
 			time = 1,
-			minpos = {x=pos.x, y=pos.y-1, z=pos.z},
-			maxpos = {x=pos.x, y=pos.y+1, z=pos.z},
-			minvel = {x=-0.2, y=0.3, z=-0.2},
-			maxvel = {x=0.2, y=1, z=0.2},
-			minacc = {x=0,y=0,z=0},
-			maxacc = {x=0,y=0,z=0},
-			minexptime = 0.2,
-			maxexptime = 1,
-			minsize = 0.3,
-			maxsize = 2,
-			collisiondetection = false,
-			texture = "steam.png",
-		})
-	     end
+			minpos = {x=pos.x-0.0, y=pos.y-0.2, z=pos.z-0.0},
+			maxpos = {x=pos.x+0.0, y=pos.y+0.2, z=pos.z+0.0},
+			minvel = {x=-0.01, y=0.01, z=-0.01},
+			maxvel = {x=0.01, y=0.02, z=-0.01},
+			minacc = {x=0.0,y=-0.0,z=-0.0},
+			maxacc = {x=0.0,y=0.01,z=-0.0},
+			minexptime = 1,
+			maxexptime = 4,
+			minsize = 1,
+			maxsize = 3,
+			collisiondetection = true,
+			texture = "farming_steam.png"
+			})
+		end
 	end
-	
-					})
+})
 
 end
 
@@ -127,7 +121,7 @@ end
 
 -- Cold beverages
 
-function register_coldbeverage(nodename,desc,liquidcolour, recipe)
+function register_coldbeverage(nodename,desc,liquidcolour, glassestexture, recipe)
 
 		  -- Register Drinks
 
@@ -138,7 +132,7 @@ function register_coldbeverage(nodename,desc,liquidcolour, recipe)
 		is_ground_content = false,
 		use_texture_alpha = true,
 		walkable = false,
-		drop = "vessels:glass_fragments",
+		drop = "vessels:glass_fragments 3",
 		groups = {dig_immediate=3,attached_node=1},
 		sounds = default.node_sound_glass_defaults(),
 		on_use = minetest.item_eat(2, "beverage:glasses"),
@@ -151,23 +145,20 @@ function register_coldbeverage(nodename,desc,liquidcolour, recipe)
 		node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.12, -0.5, -0.12, 0.12, 0.015, -0.12}, -- left
-			{-0.12, -0.5, 0.12, 0.12, 0.015, 0.12}, -- right
-			{-0.12, -0.5, -0.12, -0.12, 0.015, 0.12}, -- front
-			{0.12, -0.5, -0.12, 0.12, 0.015, 0.12}, -- behind
-			{-0.12, -0.5, -0.12, 0.12, -0.07, 0.12}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, 0, 0.1875}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, 0.0625, -0.0625}, -- left
+			{-0.1875, -0.5, 0.125, 0.125, 0.0625, 0.1875}, -- right
+			{0.0625, -0.5, -0.125, 0.125, 0.0625, 0.1875}, -- back
+			{-0.1875, -0.5, -0.125, -0.125, 0.0625, 0.1875}, -- front
 		}
 	},
 	
-	
-		tiles = {
-		'liquid.png^[colorize:'..liquidcolour,
-		'liquid_cold_top.png^(liquid_cold_bottom.png^[colorize:'..liquidcolour..')',
-		'liquid_cold_top.png^(liquid_cold_bottom.png^[colorize:'..liquidcolour..')',
-		'liquid_cold_top.png^(liquid_cold_bottom.png^[colorize:'..liquidcolour..')',
-		'liquid_cold_top.png^(liquid_cold_bottom.png^[colorize:'..liquidcolour..')',
-		'liquid_cold_top.png^(liquid_cold_bottom.png^[colorize:'..liquidcolour..')'
+			tiles = {
+				{name= 'liquid_cold_top.png^liquid_cold_bottom.png^(liquid.png^[colorize:'..liquidcolour..')'},
+				{name= 'liquid_cold_top.png^('..glassestexture..'^[colorize:'..liquidcolour..')'},
 				},	
+		
+		
 		
 	})
 	
@@ -200,14 +191,14 @@ minetest.register_node("beverage:cup", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.12, -0.5, -0.12, 0.12, -0.184615, -0.12}, -- left
-			{-0.12, -0.5, 0.12, 0.12, -0.184615, 0.12}, -- right
-			{-0.12, -0.5, -0.12, -0.12, -0.184615, 0.12}, -- front
-			{0.10, -0.5, -0.12, 0.12, -0.224615, 0.12}, -- behind
-			{0.12, -0.5, -0.0295275, 0.310597, -0.438462, 0.0295275}, -- holdbot
-			{0.12, -0.31073, -0.0354331, 0.310597, -0.249192, 0.0413386}, -- holdtop
-			{0.271386, -0.468566, -0.0354331, 0.310597, -0.249192, 0.0413386}, -- hold
-			{-0.12, -0.5, -0.12, 0.12, -0.439096, 0.12}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, -0.4375, 0.1875}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, -0.1875, -0.0625}, -- left
+			{-0.1875, -0.5, 0.125, 0.125, -0.1875, 0.1875}, -- right
+			{0.0625, -0.5, -0.125, 0.125, -0.1875, 0.1875}, -- back
+			{-0.1875, -0.5, -0.125, -0.125, -0.1875, 0.1875}, -- front
+			{0.1875, -0.4375, 0, 0.249447, -0.25, 0.0649601}, -- hold
+			{0.125, -0.3125, 0, 0.1875, -0.25, 0.0649601}, -- holdtop
+			{0.125, -0.4375, 0, 0.1875, -0.372667, 0.06496}, -- holdbot
 					}
 	},
 	tiles = {
@@ -253,17 +244,17 @@ minetest.register_node("beverage:cup", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.12, -0.5, -0.12, 0.12, 0.015, -0.12}, -- left
-			{-0.12, -0.5, 0.12, 0.12, 0.015, 0.12}, -- right
-			{-0.12, -0.5, -0.12, -0.12, 0.015, 0.12}, -- front
-			{0.12, -0.5, -0.12, 0.12, 0.015, 0.12}, -- behind
-			{-0.12, -0.5, -0.12, 0.12, -0.07, 0.12}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, -0.4375, 0.1875}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, 0.0625, -0.0625}, -- left
+			{-0.1875, -0.5, 0.125, 0.125, 0.0625, 0.1875}, -- right
+			{0.0625, -0.5, -0.125, 0.125, 0.0625, 0.1875}, -- back
+			{-0.1875, -0.5, -0.125, -0.125, 0.0625, 0.1875}, -- front
 		}
 	},
 	
 			tiles = {
-					{name= 'glasses.png'}, 								
-					{name= 'glasses.png'}
+					{name= 'liquid_cold_top.png^liquid_cold_bottom.png'}, 								
+					{name= 'liquid_cold_top.png^liquid_cold_bottom.png'}
 				},
 
 	sunlight_propagates = true,
@@ -439,20 +430,24 @@ beverage.support("berry", {
 })
 
 
--- Beverage Name					 	Description	    	 Liquid Colour	     	Cup/Glasses Texture					 		 Recipe     
+-------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------           Register drinks                    -----------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
-register_hotbeverage("coffee",			S("Coffee"),		 "#8B4513:190",    	"cup.png^[colorize:#CDC673:110", 	  "group:beverage_coffee")
-register_hotbeverage("milk",			S("Milk"),			 "#F8F8FF:190",     "cup.png^[colorize:#CD919E:110",	  "group:beverage_milk")
-register_hotbeverage("hotchocolate",	S("Hot Chocolate"),	 "#8B5A00:190", 	"cup.png^[colorize:#ADD8E6:110",	  "group:beverage_chocolate")
-register_hotbeverage("tea",				S("Tea"),			 "#CD3700:190",     "cup.png^[colorize:#CD2626:110",  	  "group:beverage_tea")
-register_hotbeverage("greentea",		S("Green Tea"),		 "#9ACD32:190",		"cup.png^[colorize:#EEC591:110", 	  "group:flower")
+-- Beverage Name					 	Description	    	 Liquid Colour	     	Cup Texture					 		 Recipe     
+
+register_hotbeverage("coffee",			S("Coffee"),		 "#8B4513:190",    	"cup.png^[colorize:#CD5C5C:90", 	  "group:beverage_coffee")
+register_hotbeverage("milk",			S("Milk"),			 "#F8F8FF:190",     "cup.png^[colorize:#7171C6:90",	  	  "group:beverage_milk")
+register_hotbeverage("hotchocolate",	S("Hot Chocolate"),	 "#8B5A00:190", 	"cup.png^[colorize:#ADD8E6:90",	      "group:beverage_chocolate")
+register_hotbeverage("tea",				S("Tea"),			 "#CD3700:190",     "cup.png^[colorize:#CDB7B5:90",  	  "group:beverage_tea")
+register_hotbeverage("greentea",		S("Green Tea"),		 "#9ACD32:190",		"cup.png^[colorize:#EEC591:90", 	  "group:flower")
 
 
 
-register_coldbeverage("orangejuice",	S("Orange Juice"),	 "#FFA500:110",    										  "group:beverage_orange")
-register_coldbeverage("applejuice",		S("Apple Juice"),	 "#EED5B7:110",    										  "group:beverage_apple")
-register_coldbeverage("cherryjuice",	S("Cherry Juice"),	 "#EE4000:110",     									  "group:beverage_berry")
-register_coldbeverage("lemonade",		S("Lemonade"),		 "#FFF68F:110",    										  "group:beverage_lemon")
-register_coldbeverage("yoghurt",		S("Yoghurt"),		 "#F5FFFA:110",    										  "group:beverage_milk")
-register_coldbeverage("icetea",			S("Ice Tea"),		 "#E37F8B:110",    										  "group:beverage_tea")
-register_coldbeverage("coconut",		S("Coconut Milk"),	 "#E0E0E0:110",    										  "group:beverage_coconut")
+register_coldbeverage("orangejuice",	S("Orange Juice"),	 "#FFA500:110",    	"liquid_cold_bottom.png",			  "group:beverage_orange")
+register_coldbeverage("applejuice",		S("Apple Juice"),	 "#EED5B7:110",    	"liquid_cold_bottom.png",			  "group:beverage_apple")
+register_coldbeverage("cherryjuice",	S("Cherry Juice"),	 "#EE4000:110",     "liquid_cold_bottom.png",			  "group:beverage_berry")
+register_coldbeverage("lemonade",		S("Lemonade"),		 "#FFF68F:110",    	"liquid_cold_bottom.png",			  "group:beverage_lemon")
+register_coldbeverage("yoghurt",		S("Yoghurt"),		 "#F5FFFA:110",    	"liquid_cold_bottom.png",			  "group:beverage_milk")
+register_coldbeverage("icetea",			S("Ice Tea"),		 "#E37F8B:110",    	"liquid_cold_bottom.png",			  "group:beverage_tea")
+register_coldbeverage("coconut",		S("Coconut Milk"),	 "#E0E0E0:110",    	"liquid_cold_bottom.png",			  "group:beverage_coconut")
