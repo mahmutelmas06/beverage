@@ -10,7 +10,7 @@
 	  
 	
 beverage = 	{
-	version = 1.0,
+	version = 1.1,
 			}	
 
 -- Inllib support for localization
