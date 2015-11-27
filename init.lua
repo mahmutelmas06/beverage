@@ -191,6 +191,7 @@ minetest.register_node("beverage:cup", {
 	paramtype = "light",
 	stack_max = 99,
 	liquids_pointable = true,
+	inventory_image = "cupinv.png",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -240,6 +241,7 @@ minetest.register_node("beverage:cup", {
 	stack_max = 99,
 	liquids_pointable = true,
 	use_texture_alpha = true,
+	inventory_image = "glassesinv.png",
 	node_box = {
 		type = "fixed",
 		fixed = {
