@@ -1,6 +1,5 @@
 default
 vessels
-bucket
 intllib?
 food?
 mobs?

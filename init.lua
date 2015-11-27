@@ -1,18 +1,21 @@
---------------------------------------------
---------------------------------------------
------------ Beverage Mod by Mahmutelmas06 --
---------------------------------------------
---------------------------------------------
+------------------------------------------------
+------------------------------------------------
+----------- Beverage Mod Api by Mahmutelmas06 --
+------------------------------------------------
+------------------------------------------------
 
--- Everything are  WTFPL except ;
-      -- Beverage support by rubenwardy from food mod GPL license
+-- Sounds CC0 Creative Commons
+-- Code  WTFPL
+
 
 	  
 	
 beverage = 	{
-	version = 1.1,
+	version = 1.2,
 			}	
-
+			
+			
+			
 -- Inllib support for localization
 
 local S
@@ -21,39 +24,28 @@ if minetest.get_modpath("intllib") then
 else
 	S = function(s) return s end
 end
+		
 
+-- Register beverages
 
-
------------- Hot beverages
-
-function register_hotbeverage(nodename,desc,liquidcolour, cuptexture, recipe)
-
-		  -- Register Drinks
-
-	minetest.register_node(":beverage:"..nodename, {
-		description = desc,
-		drawtype = "nodebox",
-		use_texture_alpha = true,
-		paramtype = "light",
-		is_ground_content = false,
-		walkable = false,
-		--inventory_image = "(cup_inv.png^[mask:"..cuptexture..")^(inside.png^[colorize:"..liquidcolour..")",
-		drop = "vessels:glass_fragments",
-		groups = {dig_immediate=3,attached_node=1},
-		sounds = default.node_sound_glass_defaults(),
-		on_use = minetest.item_eat(2, "beverage:cup"),
-		after_place_node = function(pos, placer, itemstack)
-			if placer:is_player() then
-			minetest.set_node(pos, {name="beverage:"..nodename, param2=1})
-			end
-		end,
-
-		tiles = {
-				{name= ''..cuptexture..'^(liquid.png^[colorize:'..liquidcolour..')'},
-				{name= ''..cuptexture},
-				},		
-
-		node_box = {
+function register_beverage(def)
+	local name = def.name
+	local description = def.description or ""
+	
+	if def.wherein == "cup" then 
+	cuptexture = def.cuptexture or "cup.png^[colorize:#CD5C5C:90" 
+	else if def.wherein == "glasses" then 
+	cuptexture = def.cuptexture or "liquid_cold_bottom.png" 
+	end end
+	
+	local liquidcolour = def.liquidcolour or "#8B4513:190"
+	local recipe = def.recipe
+	local recipe2 = def.recipe2 or def.recipe
+	local heat = def.heat or "cold"
+	local wherein = def.wherein or "cup"
+	
+	if def.wherein == "cup" then
+	node_box = {
 		type = "fixed",
 		fixed = {
 			{-0.1875, -0.5, -0.125, 0.125, -0.25, 0.1875}, -- bottom
@@ -66,30 +58,101 @@ function register_hotbeverage(nodename,desc,liquidcolour, cuptexture, recipe)
 			{0.125, -0.4375, 0, 0.1875, -0.372667, 0.06496}, -- holdbot
 
 				}
-		},
+		}
+		end
+		
+	if def.wherein == "cup" then			
+	tiles = {
+				{name= ''..cuptexture..'^(liquid.png^[colorize:'..liquidcolour..')'},
+				{name= ''..cuptexture},
+			}	
+	end	
+	
+	if def.wherein == "glasses" then
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.1875, -0.5, -0.125, 0.125, 0, 0.1875}, -- bottom
+			{-0.1875, -0.5, -0.125, 0.125, 0.0625, -0.0625}, -- left
+			{-0.1875, -0.5, 0.125, 0.125, 0.0625, 0.1875}, -- right
+			{0.0625, -0.5, -0.125, 0.125, 0.0625, 0.1875}, -- back
+			{-0.1875, -0.5, -0.125, -0.125, 0.0625, 0.1875}, -- front
+		}
+	}
+	end
+	
+	if def.wherein == "glasses" then
+	tiles = {
+				{name= 'liquid_cold_top.png^liquid_cold_bottom.png^(liquid.png^[colorize:'..liquidcolour..')'},
+				{name= 'liquid_cold_top.png^('..cuptexture..'^[colorize:'..liquidcolour..')'},
+			}	
+	end
+	
+	if def.wherein == "cup" then
+	inventory_image = "cupinv.png^(invin.png^[colorize:"..liquidcolour..")"
+	else if def.wherein == "glasses" then 
+	inventory_image = "glassesinv.png^(invin.png^[colorize:"..liquidcolour..")"
+	end end
+	
+	minetest.register_node("beverage:"..name, {
+		description = description,
+		drawtype = "nodebox",
+		use_texture_alpha = true,
+		paramtype = "light",
+		is_ground_content = false,
+		walkable = false,
+		inventory_image = inventory_image,
+		drop = "vessels:glass_fragments",
+		groups = {dig_immediate=3,attached_node=1},
+		sounds = default.node_sound_glass_defaults(),
+		on_use =  function(itemstack, user, pointed_thing)
+		if def.heat == "hot" then
+						   minetest.sound_play("beverage_hot", {
+						   pos = pos, gain = 0.7, hear_distance = 5})
+						   else
+						   minetest.sound_play("beverage_cold", {
+						   pos = pos, gain = 0.7, hear_distance = 5})
+						   
+		end				   
+					if minetest.get_modpath("thirsty") then
+						thirsty.drink(user, 5, 20)
+					else
+						minetest.item_eat(5, "beverage:"..wherein)
+					end
+		end,
+
+		after_place_node = function(pos, placer, itemstack)
+			if placer:is_player() then
+			minetest.set_node(pos, {name="beverage:"..name, param2=1})
+			end
+		end,
+
+		tiles = tiles,
+		node_box = node_box,
 		
 	})
 	
 	-- Crafting
 	
 	minetest.register_craft({
-	output = 'beverage:'..nodename,
+	output = 'beverage:'..name,
 	recipe = {
-		{'', '', ''},
-		{''..recipe, ''..recipe, ''},
+		{recipe, '', ''},
+		{recipe2, '', ''},
 		{'beverage:cup', '', ''},
 			 }
 	})
 
 
 	
-	
 	-- Steam animation for hot drinks
 	-- From farming plusplus mod by MTDad
 
+if def.heat == "hot" then 
+	
 minetest.register_abm({
 		nodenames = {
-				"beverage:"..nodename
+				"beverage:"..name
 				},
 	interval = 3,
 	chance = 1,
@@ -116,71 +179,11 @@ minetest.register_abm({
 })
 
 end
-
-
-
--- Cold beverages
-
-function register_coldbeverage(nodename,desc,liquidcolour, glassestexture, recipe)
-
-		  -- Register Drinks
-
-	minetest.register_node(":beverage:"..nodename, {
-		description = desc,
-		drawtype = "nodebox",
-		paramtype = "light",
-		is_ground_content = false,
-		use_texture_alpha = true,
-		walkable = false,
-		drop = "vessels:glass_fragments 3",
-		groups = {dig_immediate=3,attached_node=1},
-		sounds = default.node_sound_glass_defaults(),
-		on_use = minetest.item_eat(2, "beverage:glasses"),
-		after_place_node = function(pos, placer, itemstack)
-			if placer:is_player() then
-			minetest.set_node(pos, {name="beverage:"..nodename, param2=1})
-			end
-		end,
-		
-		node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.1875, -0.5, -0.125, 0.125, 0, 0.1875}, -- bottom
-			{-0.1875, -0.5, -0.125, 0.125, 0.0625, -0.0625}, -- left
-			{-0.1875, -0.5, 0.125, 0.125, 0.0625, 0.1875}, -- right
-			{0.0625, -0.5, -0.125, 0.125, 0.0625, 0.1875}, -- back
-			{-0.1875, -0.5, -0.125, -0.125, 0.0625, 0.1875}, -- front
-		}
-	},
-	
-			tiles = {
-				{name= 'liquid_cold_top.png^liquid_cold_bottom.png^(liquid.png^[colorize:'..liquidcolour..')'},
-				{name= 'liquid_cold_top.png^('..glassestexture..'^[colorize:'..liquidcolour..')'},
-				},	
-		
-		
-		
-	})
-	
-	-- Crafting
-	
-	minetest.register_craft({
-	output = 'beverage:'..nodename,
-	recipe = {
-		{'', '', ''},
-		{''..recipe, ''..recipe, ''},
-		{'beverage:glasses', '', ''},
-			 }
-	})
-
-------
-
 end
-------
 
 
------------------------------ Cup ------------------------
-----------------------------------------------------------
+
+------------ Empty cup
 
 minetest.register_node("beverage:cup", {
 	description = S("Cup"),
@@ -217,9 +220,6 @@ minetest.register_node("beverage:cup", {
 })
 
 
-
-	-- Crafting
-	
 	minetest.register_craft({
 	output = 'beverage:cup',
 	recipe = {
@@ -231,8 +231,7 @@ minetest.register_node("beverage:cup", {
 
 	
 	
-	
-	------------------Glasses
+----------------- Empty Glasses
 	
 	minetest.register_node("beverage:glasses", {
 	description = S("Glasses"),
@@ -281,13 +280,8 @@ minetest.register_node("beverage:cup", {
 	})
 	
 	
-
 	
-	
-
-
 ----- Checks for external content, and adds support
------ The code is GPL license
 ----- Taken from Food mod by Rubenwardy
 
 function beverage.support(group, item)
@@ -334,6 +328,7 @@ function beverage.support(group, item)
 	g["beverage_"..group] = 1
 	minetest.override_item(item, {groups = g})
 end
+
 
 
 
@@ -429,25 +424,5 @@ beverage.support("berry", {
 
 })
 
-
--------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------------------           Register drinks                    -----------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------
-
--- Beverage Name					 	Description	    	 Liquid Colour	     	Cup Texture					 		 Recipe     
-
-register_hotbeverage("coffee",			S("Coffee"),		 "#8B4513:190",    	"cup.png^[colorize:#CD5C5C:90", 	  "group:beverage_coffee")
-register_hotbeverage("milk",			S("Milk"),			 "#F8F8FF:190",     "cup.png^[colorize:#7171C6:90",	  	  "group:beverage_milk")
-register_hotbeverage("hotchocolate",	S("Hot Chocolate"),	 "#8B5A00:190", 	"cup.png^[colorize:#ADD8E6:90",	      "group:beverage_chocolate")
-register_hotbeverage("tea",				S("Tea"),			 "#CD3700:190",     "cup.png^[colorize:#CDB7B5:90",  	  "group:beverage_tea")
-register_hotbeverage("greentea",		S("Green Tea"),		 "#9ACD32:190",		"cup.png^[colorize:#EEC591:90", 	  "group:flower")
-
-
-
-register_coldbeverage("orangejuice",	S("Orange Juice"),	 "#FFA500:110",    	"liquid_cold_bottom.png",			  "group:beverage_orange")
-register_coldbeverage("applejuice",		S("Apple Juice"),	 "#EED5B7:110",    	"liquid_cold_bottom.png",			  "group:beverage_apple")
-register_coldbeverage("cherryjuice",	S("Cherry Juice"),	 "#EE4000:110",     "liquid_cold_bottom.png",			  "group:beverage_berry")
-register_coldbeverage("lemonade",		S("Lemonade"),		 "#FFF68F:110",    	"liquid_cold_bottom.png",			  "group:beverage_lemon")
-register_coldbeverage("yoghurt",		S("Yoghurt"),		 "#F5FFFA:110",    	"liquid_cold_bottom.png",			  "group:beverage_milk")
-register_coldbeverage("icetea",			S("Ice Tea"),		 "#E37F8B:110",    	"liquid_cold_bottom.png",			  "group:beverage_tea")
-register_coldbeverage("coconut",		S("Coconut Milk"),	 "#E0E0E0:110",    	"liquid_cold_bottom.png",			  "group:beverage_coconut")
+			
+dofile(minetest.get_modpath("beverage").."/beverages.lua")

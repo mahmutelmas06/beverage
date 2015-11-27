@@ -1,4 +1,4 @@
-# Türkçe
+# Türkçe (Turkish)
 # Mahmut Elmas
 # mahmutelmas06@hotmail.com
 
@@ -11,8 +11,6 @@ Cup = Fincan
 Glasses = Bardak
 Orange Juice = Portakal Suyu
 Apple Juice = Elma Suyu
-Cherry Juice = Viþne Suyu
+Berry Juice = Böðürtlen Suyu
 Lemonade = Limonata
-Yoghurt = Ayran
-Ice Tea = Soðuk Çay
 Coconut Milk = Hindistan Cevizi Sütü
