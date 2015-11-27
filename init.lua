@@ -139,7 +139,7 @@ function register_beverage(def)
 	recipe = {
 		{recipe, '', ''},
 		{recipe2, '', ''},
-		{'beverage:cup', '', ''},
+		{'beverage:'..wherein, '', ''},
 			 }
 	})
 
