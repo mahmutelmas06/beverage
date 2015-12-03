@@ -102,7 +102,6 @@ function register_beverage(def)
 		is_ground_content = false,
 		walkable = false,
 		inventory_image = inventory_image,
-		drop = "vessels:glass_fragments",
 		groups = {dig_immediate=3,attached_node=1},
 		sounds = default.node_sound_glass_defaults(),
 		on_use =  function(itemstack, user, pointed_thing)
