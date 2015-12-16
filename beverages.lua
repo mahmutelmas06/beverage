@@ -13,11 +13,12 @@
 register_beverage({
 				   name = name of your drink,
 				   recipe = "put fruit for drink"
+				   recipe2 = "put fruit for drink"							  optional
 				   description = "description of your drink",                 optional
 				   liquidcolour = "colour of your liquids RGB code",          optional
 				   wherein = "cup or glasses for now"                         optional
-				   cuptexture = "cup texture",                                optional
-				   heat = "hot or cold by default"                            optional
+				   cuptexture = "cup texture",  cup by default                optional
+				   heat = "hot or cold " hot by default                       optional
 				  })
 --]]
 

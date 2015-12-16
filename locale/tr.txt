@@ -14,3 +14,4 @@ Apple Juice = Elma Suyu
 Berry Juice = Böðürtlen Suyu
 Lemonade = Limonata
 Coconut Milk = Hindistan Cevizi Sütü
+"Please insert a coin in the machine." = "Lütfen önce makinaya para yerleþtirin."

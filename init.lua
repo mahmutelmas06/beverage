@@ -26,24 +26,38 @@ else
 end
 		
 
+
 -- Register beverages
 
 function register_beverage(def)
 	local name = def.name
 	local description = def.description or ""
 	
+  
 	if def.wherein == "cup" then 
 	cuptexture = def.cuptexture or "cup.png^[colorize:#CD5C5C:90" 
+  
 	else if def.wherein == "glasses" then 
 	cuptexture = def.cuptexture or "liquid_cold_bottom.png" 
-	end end
+  
+	else if def.wherein == "kadeh" then 
+	cuptexture = def.cuptexture or "beverage_kadeh.png" 
+  
+	end end end
 	
 	local liquidcolour = def.liquidcolour or "#8B4513:190"
 	local recipe = def.recipe
 	local recipe2 = def.recipe2 or def.recipe
-	local heat = def.heat or "cold"
+	local heat = def.heat or "hot"
 	local wherein = def.wherein or "cup"
+  local tintile = def.tintile or "beverage_tinside.png"
+  local tininv = def.tininv or "beverage_tininv.png^[colorize:"..liquidcolour
 	
+  
+  -- Nodebox for Cup, Glasses, Kadeh
+  
+  local node_box
+  
 	if def.wherein == "cup" then
 	node_box = {
 		type = "fixed",
@@ -59,14 +73,9 @@ function register_beverage(def)
 
 				}
 		}
-		end
 		
-	if def.wherein == "cup" then			
-	tiles = {
-				{name= ''..cuptexture..'^(liquid.png^[colorize:'..liquidcolour..')'},
-				{name= ''..cuptexture},
-			}	
-	end	
+    else
+		
 	
 	if def.wherein == "glasses" then
 	node_box = {
@@ -79,21 +88,75 @@ function register_beverage(def)
 			{-0.1875, -0.5, -0.125, -0.125, 0.0625, 0.1875}, -- front
 		}
 	}
+	
+  
+  else
+	
+	
+	if def.wherein == "kadeh" then
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.1875, -0.25, -0.125, 0.125, -0.25, 0.1875}, -- bottom
+			{-0.1875, -0.25, -0.125, 0.125, -0.0625, -0.0625}, -- left
+			{-0.1875, -0.25, 0.125, 0.125, -0.0625, 0.1875}, -- right
+			{0.0625, -0.25, -0.125, 0.125, -0.0625, 0.1875}, -- back
+			{-0.1875, -0.25, -0.125, -0.125, -0.0625, 0.1875}, -- front
+			{-0.0625, -0.25, 0.0625, 0, -0.5, -5.58794e-009}, -- hold
+			{-0.125, -0.5, -0.0625, 0.0625, -0.4375, 0.125}, -- holdbottom
+		}
+	}
 	end
 	
-	if def.wherein == "glasses" then
+end end
+
+-- Tiles for drinks, glasses, cup, kadeh
+
+local tiles
+
+	if def.wherein == "kadeh" then
+	tiles = {
+				{name= 'liquid_cold_top.png^liquid_cold_bottom.png^(liquid.png^[colorize:'..liquidcolour..')'},
+				{name= ''..cuptexture},
+			}	
+	
+  else
+	
+			if def.wherein == "glasses" then
 	tiles = {
 				{name= 'liquid_cold_top.png^liquid_cold_bottom.png^(liquid.png^[colorize:'..liquidcolour..')'},
 				{name= 'liquid_cold_top.png^('..cuptexture..'^[colorize:'..liquidcolour..')'},
 			}	
-	end
 	
-	if def.wherein == "cup" then
+  else
+  
+  	if def.wherein == "cup" then			
+	tiles = {
+				{name= ''..cuptexture..'^(liquid.png^[colorize:'..liquidcolour..')'},
+				{name= ''..cuptexture},
+			}	
+	end	
+  
+end end
+
+
+-- Inventory images for beverages
+
+local inventory_image
+
+	if def.wherein == "cup" then  
 	inventory_image = "cupinv.png^(invin.png^[colorize:"..liquidcolour..")"
+  
 	else if def.wherein == "glasses" then 
 	inventory_image = "glassesinv.png^(invin.png^[colorize:"..liquidcolour..")"
-	end end
+  
+	else if def.wherein == "kadeh" then
+	inventory_image = "kadehinv.png^(kadehin.png^[colorize:"..liquidcolour..")"
+end end end
 	
+  
+  -- Node definition for beverages, cups, glasses, kadeh
+  
 	minetest.register_node("beverage:"..name, {
 		description = description,
 		drawtype = "nodebox",
@@ -143,7 +206,39 @@ function register_beverage(def)
 	})
 
 
-	
+-- Make tin versions of beverages. Can be used for vending machine
+
+if def.heat == "cold" then 
+
+  	minetest.register_node("beverage:"..name.."_tin", {
+		description = description.." Tin",
+		drawtype = "nodebox",
+		use_texture_alpha = true,
+		paramtype = "light",
+    inventory_image = tininv,
+		is_ground_content = false,
+		walkable = false,
+		groups = {dig_immediate=3,attached_node=1},
+		sounds = default.node_sound_glass_defaults(),
+		tiles = {
+		"beverage_tintop.png",
+		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
+		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
+		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
+		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
+		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
+            },
+		node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.125, -0.5, -0.125, 0.125, -0.125, 0.125}, -- front
+		}
+	}
+		
+	})
+
+end
+ 
 	-- Steam animation for hot drinks
 	-- From farming plusplus mod by MTDad
 
@@ -177,8 +272,8 @@ minetest.register_abm({
 	end
 })
 
-end
-end
+end end
+
 
 
 
@@ -281,6 +376,135 @@ minetest.register_node("beverage:cup", {
 	})
 	
 	
+	----------------- Empty Kadeh
+	
+	minetest.register_node("beverage:kadeh", {
+	description = S("Kadeh"),
+	drawtype = "nodebox",
+	paramtype = "light",
+	stack_max = 99,
+	liquids_pointable = true,
+	use_texture_alpha = true,
+	inventory_image = "kadehinv.png",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.1875, -0.25, -0.125, 0.125, -0.25, 0.1875}, -- bottom
+			{-0.1875, -0.25, -0.125, 0.125, -0.0625, -0.0625}, -- left
+			{-0.1875, -0.25, 0.125, 0.125, -0.0625, 0.1875}, -- right
+			{0.0625, -0.25, -0.125, 0.125, -0.0625, 0.1875}, -- back
+			{-0.1875, -0.25, -0.125, -0.125, -0.0625, 0.1875}, -- front
+			{-0.0625, -0.25, 0.0625, 0, -0.5, -5.58794e-009}, -- hold
+			{-0.125, -0.5, -0.0625, 0.0625, -0.4375, 0.125}, -- holdbottom
+		}
+	},
+	
+			tiles = {
+					{name= 'liquid_cold_top.png^liquid_cold_bottom.png'}, 								
+					{name= 'liquid_cold_top.png^liquid_cold_bottom.png'}
+				},
+
+	sunlight_propagates = true,
+	walkable = false,
+	drop = "vessels:glass_fragments",
+	groups = {dig_immediate=3,attached_node=1},
+	sounds = default.node_sound_glass_defaults(),
+	after_place_node = function(pos, placer, itemstack)
+		if placer:is_player() then
+			minetest.set_node(pos, {name="beverage:kadeh", param2=1})
+		end
+	end,
+})
+	
+		-- Crafting
+	
+	minetest.register_craft({
+	output = 'beverage:kadeh',
+	recipe = {
+		{'vessels:glass_fragments', 'vessels:glass_fragments', 'vessels:glass_fragments'},
+		{'', 'vessels:glass_fragments', ''},
+		{'', 'vessels:glass_fragments', ''},
+			 }
+	})
+	
+	
+	
+	
+  ----------- Vending Machine
+
+
+
+local beveragetin =  {"beverage:applejuice_tin",
+                      "beverage:orangejuice_tin", 
+                      "beverage:berryjuice_tin", 
+                      "beverage:lemonade_tin"
+                     }
+
+
+minetest.register_node("beverage:vending", {
+	description = S("Vending Machine"),
+  drawtype = "mesh",
+	mesh = "homedecor_soda_machine.obj",
+  inventory_image = "beverage_vendinginv.png",
+  paramtype = "light",
+  tiles = {"beverage_vending.png"},
+  groups = {snappy=3},
+  selection_box = {
+		 type = "fixed",
+     fixed = {-0.5, -0.5, -0.5, 0.5, 1.5, 0.5}
+	},
+  collision_box = {
+		 type = "fixed",
+     fixed = {-0.5, -0.5, -0.5, 0.5, 1.5, 0.5}
+	},
+
+	expand = { top="placeholder" }, 
+	sounds = default.node_sound_glass_defaults(),
+	on_rotate = screwdriver.rotate_simple,
+	on_punch = function(pos, node, puncher, pointed_thing)
+		local wielditem = puncher:get_wielded_item()
+		local wieldname = wielditem:get_name()
+		local fdir_to_fwd = { {0, -1}, {-1, 0}, {0, 1}, {1, 0} }
+		local fdir = node.param2
+		local pos_drop = { x=pos.x+fdir_to_fwd[fdir+1][1], y=pos.y, z=pos.z+fdir_to_fwd[fdir+1][2] }
+		if wieldname == (
+                    "default:gold_lump" or
+                    "default:gold_ingot" or
+                    "default:diamond" or
+                    "currency:minegeld" or
+                    "currency:minegeld_5" or
+                    "currency:minegeld_10" or
+                    "bitchange:minecoin" or
+                    "bitchange:mineninth" or
+                    "homedecor:coin" )
+                    
+ then
+      wielditem:take_item()
+			puncher:set_wielded_item(wielditem)
+      local beveragetins = beveragetin
+      local RndChoice = beveragetins[math.random( #beveragetins )]
+			minetest.spawn_item(pos_drop, RndChoice)
+			minetest.sound_play("insert_coin", {
+				pos=pos, max_hear_distance = 5
+			})
+		else
+			minetest.chat_send_player(puncher:get_player_name(), S("Please insert a coin in the machine."))
+		end
+	end
+})
+
+		-- Crafting
+	
+	minetest.register_craft({
+	output = 'beverage:vending',
+	recipe = {
+		{'', 'default:iron_lump', ''},
+		{'', 'vessels:glass_fragments', ''},
+		{'', 'default:iron_lump', ''},
+			 }
+	})
+
+	
 	
 ----- Checks for external content, and adds support
 ----- Taken from Food mod by Rubenwardy
@@ -340,6 +564,8 @@ beverage.support("apple", {
 	"ironapple:apple_iron",
 
 })
+
+
 
 beverage.support("chocolate", {
 	"farming_plus:cocoa_bean",
