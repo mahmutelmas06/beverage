@@ -219,7 +219,16 @@ if def.heat == "cold" then
 		is_ground_content = false,
 		walkable = false,
 		groups = {dig_immediate=3,attached_node=1},
-		sounds = default.node_sound_glass_defaults(),
+		on_use =  function(itemstack, user, pointed_thing)
+				minetest.sound_play("beverage_cold", {
+				pos = pos, gain = 0.7, hear_distance = 5})
+						   
+			   	if minetest.get_modpath("thirsty") then
+						thirsty.drink(user, 5, 20)
+					else
+						minetest.item_eat(5, "beverage:"..wherein)
+					end
+		end,
 		tiles = {
 		"beverage_tintop.png",
 		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
