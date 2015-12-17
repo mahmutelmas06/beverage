@@ -41,6 +41,11 @@ You can add your own drinks by using that template
 
 Changelog
 
+    1.3 -
+    Added vending machine
+    Added tins
+    Improved Api
+
     1.2 -
     Added drinking sounds
     Added support for thirsty mod
