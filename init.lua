@@ -226,7 +226,7 @@ if def.heat == "cold" then
 			   	if minetest.get_modpath("thirsty") then
 						thirsty.drink(user, 5, 20)
 					else
-						minetest.item_eat(5, "beverage:"..wherein)
+						minetest.item_eat(5)
 					end
 		end,
 		tiles = {
