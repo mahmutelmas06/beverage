@@ -11,7 +11,7 @@
 	  
 	
 beverage = 	{
-	version = 1.3,
+	version = 1.5,
 			}	
 			
 			
@@ -167,6 +167,7 @@ end end end
 		inventory_image = inventory_image,
 		groups = {dig_immediate=3,attached_node=1},
 		sounds = default.node_sound_glass_defaults(),
+    stack_max = 4,
 		on_use =  function(itemstack, user, pointed_thing)
 		if def.heat == "hot" then
 						   minetest.sound_play("beverage_hot", {
@@ -181,6 +182,10 @@ end end end
 					else
 						minetest.item_eat(5, "beverage:"..wherein)
 					end
+          
+          itemstack:take_item()
+          return itemstack
+          
 		end,
 
 		after_place_node = function(pos, placer, itemstack)
@@ -219,6 +224,7 @@ if def.heat == "cold" then
 		is_ground_content = false,
 		walkable = false,
 		groups = {dig_immediate=3,attached_node=1},
+    stack_max = 6,
 		on_use =  function(itemstack, user, pointed_thing)
 				minetest.sound_play("beverage_cold", {
 				pos = pos, gain = 0.7, hear_distance = 5})
@@ -228,14 +234,17 @@ if def.heat == "cold" then
 					else
 						minetest.item_eat(5)
 					end
+          
+          itemstack:take_item()
+          return itemstack
 		end,
 		tiles = {
 		"beverage_tintop.png",
-		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
-		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
-		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
-		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
-		"cup.png^[colorize:"..liquidcolour.."^"..tintile,
+		"default_steel_block.png",
+		"(cup.png^[colorize:"..liquidcolour..")^"..tintile,
+		"(cup.png^[colorize:"..liquidcolour..")^"..tintile,
+		"(cup.png^[colorize:"..liquidcolour..")^"..tintile,
+		"(cup.png^[colorize:"..liquidcolour..")^"..tintile
             },
 		node_box = {
 		type = "fixed",
@@ -478,8 +487,6 @@ minetest.register_node("beverage:vending", {
 		local pos_drop = { x=pos.x+fdir_to_fwd[fdir+1][1], y=pos.y, z=pos.z+fdir_to_fwd[fdir+1][2] }
 		if wieldname == (
                     "default:gold_lump" or
-                    "default:gold_ingot" or
-                    "default:diamond" or
                     "currency:minegeld" or
                     "currency:minegeld_5" or
                     "currency:minegeld_10" or
