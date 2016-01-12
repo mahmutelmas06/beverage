@@ -42,6 +42,10 @@ You can add your own drinks by using that template
 Changelog
 
     1.3 -
+    Added maximum stacks
+    Drinks are disappeared when used
+
+    1.3 -
     Added vending machine
     Added tins
     Improved Api
