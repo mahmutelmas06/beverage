@@ -33,7 +33,7 @@ function register_beverage(def)
 	local name = def.name
 	local description = def.description or ""
 	
-  
+  	local cuptexture
 	if def.wherein == "cup" then 
 	cuptexture = def.cuptexture or "cup.png^[colorize:#CD5C5C:90" 
   
