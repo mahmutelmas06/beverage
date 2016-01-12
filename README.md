@@ -41,7 +41,7 @@ You can add your own drinks by using that template
 
 Changelog
 
-    1.3 -
+    1.4 -
     Added maximum stacks
     Drinks are disappeared when used
 
