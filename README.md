@@ -32,14 +32,19 @@ You can add your own drinks by using that template
     register_beverage({
                    name = name of your drink,
                    recipe = "put fruit for drink"
+                   liquidcolour = "colour of your liquids RGB code",          
                    description = "description of your drink",                 optional
-                   liquidcolour = "colour of your liquids RGB code",          optional
-                   wherein = "cup or glasses for now"                         optional
-                   cuptexture = "cup texture",                                optional
-                   heat = "hot or cold by default"                            optional
+                   wherein = "cup or glasses"                                 optional cup by default
+                   cuptexture = "cup/glasses texture",                        optional
+                   heat = "hot or cold"                                       optional hot by default
                   })
 
 Changelog
+
+    1.5 -
+    Vending machine is rotateable
+    Code tidy
+    Use coins from many mods for vending machine
 
     1.4 -
     Added maximum stacks
