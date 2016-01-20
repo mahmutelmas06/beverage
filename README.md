@@ -48,7 +48,7 @@ Changelog
 
     1.4 -
     Added maximum stacks
-    Drinks are disappeared when used
+    Drinks are consumed when used
 
     1.3 -
     Added vending machine
