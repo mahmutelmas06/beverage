@@ -1,4 +1,4 @@
-Baverage Mod
+Beverage Mod
 
 This mod adds various drinks to minetest
 
@@ -12,22 +12,21 @@ Apple Juice, Cherry Juice, Lemonade
 Coconut Milk
 
 -- Dependecies
-No external depentecies.Just the ones comes with default game engine
-Default
-Vessels
 
--- Hot drinks has steam animation
+No external depentecies are needed, just the ones comes with default game engine:
+- Default
+- Vessels
+
+-- Hot drinks have a steam animation effect
 
 
-
--- Drinks has support from theese mods
+-- Beverages has support for these mods:
 farming, farming_plus, mobs, animals_modpack, foodblock
 moretrees, biomelib, mtfoods, foods, ethereal, flowers
 bushes, food_sweet, kpgmobs, fruit, jkanimals, ironapple
 
 
-
-You can add your own drinks by using that template
+You can add your own drinks by using the following template:
 
     register_beverage({
                    name = name of your drink,
