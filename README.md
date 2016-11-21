@@ -2,7 +2,7 @@ Beverage Mod
 
 This mod adds various drinks to minetest
 
-License = WTFPL
+License = MIT
 
 -- Current Beverages
 
@@ -15,7 +15,7 @@ Coconut Milk
 
 No external depentecies are needed, just the ones comes with default game engine:
 - Default
-- Vessels
+- Vessels ( For crafting recipe )
 
 -- Hot drinks have a steam animation effect
 
@@ -39,6 +39,19 @@ You can add your own drinks by using the following template:
                   })
 
 Changelog
+
+
+
+    1.7
+	Cleaned code
+	License changed from WTFPL to MIT
+	You have to use fire to boil hot beverages
+
+    1.6
+	Deleted unnecessary codes (kadeh etc)
+	More coins added
+	Deleted empty cup and glasses because of no use for now
+	
 
     1.5 -
     Vending machine is rotateable

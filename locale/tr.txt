@@ -1,17 +1,19 @@
-# Türkçe (Turkish)
+# TÃ¼rkÃ§e (Turkish)
 # Mahmut Elmas
 # mahmutelmas06@hotmail.com
 
 Coffee = Kahve
-Milk = Süt
-Hot Chocolate = Sýcak Çikolata
-Tea = Çay
-Green Tea = Yeþil Çay
+Milk = SÃ¼t
+Hot Chocolate = SÄ±cak Ã‡ikolata
+Tea = Ã‡ay
+Green Tea = YeÅŸil Ã‡ay
 Cup = Fincan
 Glasses = Bardak
 Orange Juice = Portakal Suyu
 Apple Juice = Elma Suyu
-Berry Juice = Böðürtlen Suyu
+Berry Juice = BÃ¶ÄŸÃ¼rtlen Suyu
 Lemonade = Limonata
-Coconut Milk = Hindistan Cevizi Sütü
-"Please insert a coin in the machine." = "Lütfen önce makinaya para yerleþtirin."
+Coconut Milk = Hindistan Cevizi SÃ¼tÃ¼
+Vending Machine = Ä°Ã§ecek OtomatÄ±
+Please insert a coin in the machine. = LÃ¼tfen Ã¶nce makinaya para yerleÅŸtirin.
+ Tin = Kutusu
